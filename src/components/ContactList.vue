@@ -49,7 +49,6 @@ export default {
     },
     methods: {
         search(e){
-            //console.log("search:=> ",e)
             this.contacts = this.contactList.filter((contact) => {
                 return (contact.first_name.match(e) || contact.last_name.match(e) || contact.mobile_number.match(e));
             });
