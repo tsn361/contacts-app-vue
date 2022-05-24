@@ -23,12 +23,13 @@
                   <a class="text-sm-body-2 pt-sm-2">Last name</a><br>
                   <span class="text-sm-body-2 black--text">{{contact.last_name}}</span>
               </div>
-              <div class="mt-3">
-                  <a class="text-sm-body-2 pt-sm-2">Email</a><br>
-                  <span class="text-sm-body-2 black--text">{{contact.phone}}</span>
-              </div>
+
               <div class="mt-3">
                   <a class="text-sm-body-2 pt-sm-2">Phone number</a><br>
+                  <span class="text-sm-body-2 black--text">{{contact.mobile_number}}</span>
+              </div>
+              <div class="mt-3">
+                  <a class="text-sm-body-2 pt-sm-2">Email</a><br>
                   <span class="text-sm-body-2 black--text">{{contact.email}}</span>
               </div>
             </div>
@@ -36,6 +37,7 @@
 
             <div class="action-area border">
                 <v-btn
+                  @click="$router.push('/edit/'+contact.id)"
                     class="mr-3"
                     fab
                     blue
@@ -45,6 +47,7 @@
                     </svg>
                 </v-btn>
                  <v-btn
+                    @click="deleteContact(contact.id)"
                     class=""
                     fab
                     color="pink darken-3"
@@ -85,12 +88,15 @@ export default {
         }
     },
     methods: {
-
+      deleteContact(id) {
+        this.$store.dispatch('deleteContact', id);
+        this.$router.push('/');
+      }
     },
-    mounted() {
-
-      //filter contact list by route params
-      this.contact = this.getContact.filter(contact => contact.id == this.$route.params.id)
+    created() {
+      setTimeout(() => {
+        this.contact = this.getContact.filter(contact => contact.id == this.$route.params.id)[0]
+      }, 100);
     }
 };
 </script>

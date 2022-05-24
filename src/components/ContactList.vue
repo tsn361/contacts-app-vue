@@ -2,8 +2,19 @@
   <v-container>
     <v-row class="">
         <v-col class="">
-            <v-card v-for="(contact, i) in contactList" :key="i" class="mx-auto mt-4" min-width="100%">
-                <router-link to="/detail/1" class="text-decoration-none c-p">
+
+            <v-text-field
+                outlined
+                height="26"
+                v-model="searchKey"
+                @input="search"
+                :flat="false"
+                class=""
+                label="Type name or number"
+                append-icon="mdi-magnify"
+            ></v-text-field>
+            <v-card v-for="(contact, i) in contacts" :key="i" class="mx-auto mt-4" min-width="100%">
+                <router-link :to="`/detail/${contact.id}`" class="text-decoration-none c-p">
                     <div class="d-flex">
                         <div class="">
                             <v-img
@@ -12,7 +23,7 @@
                             ></v-img>
                         </div>
                         <div class="">
-                            <a class="text-sm-body-2 pt-sm-2">{{contact.name}}</a><br>
+                            <a class="text-sm-body-2 pt-sm-2">{{contact.first_name}} {{contact.last_name}}</a><br>
                             <span class="text-sm-body-2 black--text">{{contact.mobile_number}}</span>
                         </div>
                     </div>
@@ -26,8 +37,10 @@
 <script>
 
 export default {
-    name: 'Search',
+    name: 'contactList',
     data: () => ({
+        searchKey: '',
+        contacts: []
     }),
     computed: {
         contactList(){
@@ -35,9 +48,17 @@ export default {
         }
     },
     methods: {
-
+        search(e){
+            //console.log("search:=> ",e)
+            this.contacts = this.contactList.filter((contact) => {
+                return (contact.first_name.match(e) || contact.last_name.match(e) || contact.mobile_number.match(e));
+            });
+        }
     },
     mounted() {
+        setTimeout(() => {
+            this.contacts = this.contactList
+        }, 100);
     },
   }
 </script>

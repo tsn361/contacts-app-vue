@@ -34,10 +34,10 @@
                 ></v-text-field>
 
                 <v-text-field
-                    v-model="contact.mobile_number"
+                    v-model="contact.phone"
                     color="blue darken-2"
                     label="Phone Number"
-                    :rules="rules.mobile_number"
+                    :rules="rules.phone"
                     required
                 ></v-text-field>
 
@@ -61,13 +61,6 @@
                     </v-icon>
                 </v-btn>
                 </v-form>
-                <v-alert
-                    type="success"
-                    :value="addSuccess"
-                    dismissible
-               >
-                    Contact added successfully
-                </v-alert>
             </v-col>
         </v-row>
     </v-container>
@@ -82,19 +75,17 @@ export default {
         TopNav
     },
     data: () => ({
-        addSuccess: false,
         contact: {
             first_name: '',
             last_name: '',
-            mobile_number: '',
+            phone: '',
             email: ''
         },
         rules: {
-            //validation rules should be improved
           first_name: [val => (val || '').length > 0 || 'This field is required'],
           last_name: [val => (val || '').length > 0 || 'This field is required'],
           email: [val => (val || '').length > 0 || 'This field is required'],
-          mobile_number: [val => (val || '').length > 0 || 'This field is required'],
+          phone: [val => (val || '').length > 0 || 'This field is required'],
         },
     }),
     computed: {
@@ -103,35 +94,11 @@ export default {
         },
         formIsValid () {
             return (this.contact.first_name !== '' && this.contact.last_name !== ''&& this.contact.email !== '' && this.contact.phone !== '')
-        },
-        getContact() {
-          return this.$store.getters.getContactList
-        }
-    },
-    mounted() {
-        if(this.$route.name === 'Edit'){
-            this.contact = this.getContact.filter(contact => contact.id == this.$route.params.id)[0]
         }
     },
     methods: {
         submit() {
-            //console.log('submit', this.formIsValid)
-            if(!this.formIsValid){
-                alert("Please fill all the fields");
-            }
-
-            if(this.formIsValid) {
-                
-                if(this.$route.name === 'Edit'){
-                    this.$store.dispatch('updateContact', this.contact)
-                }else{
-                    this.contact.id = this.getContact.length + 1;
-                    this.$store.dispatch('addContact', this.contact)
-                }
-
-                this.addSuccess = true
-                this.$router.push('/')
-            }
+            console.log('submit', this.formIsValid)
         }  
     }
 };
